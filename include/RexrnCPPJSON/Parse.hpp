@@ -22,9 +22,9 @@ struct ParseException : std::exception {
 /// <typename name="TForwardIterator">Type of the forward iterator used to access JSON content.</typename> 
 /// <param name="first_">Param</param>
 /// <param name="last_">Param</param>
-/// <summary>
+/// <returns>
 /// 	ReturnDescription
-/// </summary>
+/// </returns>
 template <typename TForwardIterator>
 Property parse(TForwardIterator first_, TForwardIterator last_)
 {
@@ -35,9 +35,9 @@ Property parse(TForwardIterator first_, TForwardIterator last_)
 ///     Parses JSON contents stored within specified string.
 /// </summary>
 /// <param name="jsonContents_">JSON string.</param>
-/// <summary>
+/// <returns>
 ///     Root property of the specified JSON.
-/// </summary>
+/// </returns>
 template <typename TChar>
 Property parse(std::basic_string<TChar> const &JSONContents_)
 {

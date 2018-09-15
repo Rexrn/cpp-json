@@ -22,10 +22,28 @@ class String
 	String(char const* first_, char const* last_, bool readOnly_ = true);
 
 	/// <summary>
+	/// 	Construct a new <see cref="String"/> object using cref to other instance of the <see cref="String"/>.
+	/// </summary>
+	/// <param name="other_">cref to other instance of the <see cref="String"/></param>
+	String(String const & other_); // to impl
+
+	/// <summary>
 	/// 	Construct a new <see cref="String"/> object using rvalue reference to moved other instance of the <see cref="String"/>.
 	/// </summary>
 	/// <param name="other_">rvalue ref to moved other instance of the <see cref="String"/></param>
 	String(String && other_);
+
+	/// <summary>
+	/// 	Assigns new value to the instance. Moves values from other instance of the <see cref="String"/>.
+	/// </summary>
+	/// <param name="other_">rvalue ref to moved other instance of the <see cref="String"/></param>
+	String& operator=(String && other_); // to impl
+
+	/// <summary>
+	/// 	Assigns new value to the instance. Copies values from other instance of the <see cref="String"/>.
+	/// </summary>
+	/// <param name="other_">cref to other instance of the <see cref="String"/></param>
+	String& operator=(String const & other_); // to impl
 
 	/// <summary>
 	/// 	Assigns specified characters to the string (either in read-only mode or not).

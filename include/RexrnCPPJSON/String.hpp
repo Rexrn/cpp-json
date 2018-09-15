@@ -5,14 +5,34 @@
 namespace rexrn_cpp_json
 {
 
-namespace details
-{
-
 /// <summary>
 /// 	Wraps either read-only or manually allocated string.
 /// </summary>
 class String
 {
+public:
+
+	/// <summary>
+	/// 	Construct a new, nulled <see cref="String"/> instance.
+	/// </summary>
+	String();
+
+	/// <summary>
+	/// 	Construct a new <see cref="String"/>. Copies and assigns bytes of the specified string.
+	/// </summary>
+	template <typename TChar>
+	String(std::basic_string<TChar> const & string_)
+		: _readOnly{ false }
+	{
+		if (!string_.empty())
+		{
+			_string.assign(
+					reinterpret_cast<char const*>(string_.data()),
+					reinterpret_cast<char const*>(string_.data() + string_.size())
+				);
+		}
+	}
+
 	/// <summary>
 	/// 	Construct a new <see cref="String"/>. Assigns specified characters to the string (either in read-only mode or not).
 	/// </summary>
@@ -34,6 +54,11 @@ class String
 	String(String && other_);
 
 	/// <summary>
+	/// 	Destroy the String object
+	/// </summary>
+	~String();
+
+	/// <summary>
 	/// 	Assigns new value to the instance. Moves values from other instance of the <see cref="String"/>.
 	/// </summary>
 	/// <param name="other_">rvalue ref to moved other instance of the <see cref="String"/></param>
@@ -44,6 +69,11 @@ class String
 	/// </summary>
 	/// <param name="other_">cref to other instance of the <see cref="String"/></param>
 	String& operator=(String const & other_); // to impl
+
+	/// <summary>
+	/// 	Resets this instance to null string.
+	/// </summary>
+	void reset();
 
 	/// <summary>
 	/// 	Assigns specified characters to the string (either in read-only mode or not).
@@ -90,7 +120,21 @@ class String
 	/// </returns>
 	std::string const & getString() const;
 	
+	/// <summary>
+	/// 	Determines whether string is not set at all.
+	/// </summary>
+	/// <returns>
+	/// 	<c>true</c> if string is not set; otherwise, <c>false</c>.
+	/// </returns>
+	bool isNull() const;
+
 private:
+
+	/// <summary>
+	/// 	Calls destructor for members in union (this needs to be done manually).
+	/// </summary>
+	void cleanup();
+
 	bool _readOnly;
 	union {
 		struct {
@@ -100,7 +144,5 @@ private:
 		std::string _string;
 	};
 };
-
-}
 
 }
